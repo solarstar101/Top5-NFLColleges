@@ -1,14 +1,6 @@
 import "tailwindcss/tailwind.css";
-import {
-  CheckCircleIcon,
-  ChevronRightIcon,
-  MailIcon,
-  SearchIcon,
-  TrashIcon,
-  XCircleIcon,
-} from "@heroicons/react/solid";
 import Searchbar from "./Components/Searchbar";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import NFL from "../src/assets/nfl.svg";
 import Loader from "./Components/Loader";
@@ -17,7 +9,7 @@ const App = () => {
   const [results, setResults] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const clean = (obj: any) => {
+  const clean = (obj :any) => {
     for (var propName in obj) {
       if (obj[propName] === null || obj[propName] === undefined) {
         delete obj[propName];
@@ -27,7 +19,6 @@ const App = () => {
   };
   const getTeamData = async () => {
     setLoading(true);
-    let teamArray = [];
     const AllTeamsRequest = await axios
       .get(`http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams`)
       .then((res) => res.data.sports[0].leagues[0].teams);
@@ -77,7 +68,7 @@ const App = () => {
     <div className='flex items-center min-h-screen w-full p-2  bg-gray-200 justify-center'>
       <div className=' bg-white shadow overflow-hidden rounded-lg p-4 max-w-7xl mx-auto  my-auto px-4 sm:px-6 lg:px-8'>
         <h1 className='items-center  text-3xl text-center justify-center font-medium text-gray-700'>
-          Top 5 Most Attended Colleges By NFL Players{" "}
+          Top 5 Most Attended Colleges By Current NFL Players{" "}
         </h1>
 
         <Searchbar
