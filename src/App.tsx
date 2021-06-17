@@ -1,14 +1,6 @@
 import "tailwindcss/tailwind.css";
-import {
-  CheckCircleIcon,
-  ChevronRightIcon,
-  MailIcon,
-  SearchIcon,
-  TrashIcon,
-  XCircleIcon,
-} from "@heroicons/react/solid";
 import Searchbar from "./Components/Searchbar";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import NFL from "../src/assets/nfl.svg";
 import Loader from "./Components/Loader";
@@ -27,7 +19,6 @@ const App = () => {
   };
   const getTeamData = async () => {
     setLoading(true);
-    let teamArray = [];
     const AllTeamsRequest = await axios
       .get(`http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams`)
       .then((res) => res.data.sports[0].leagues[0].teams);
@@ -50,6 +41,7 @@ const App = () => {
     const final = await clean(AthleteInfo)
       .map((point: any) => point.name)
       .sort();
+
     const hash = await final.sort().reduce((obj: any, e: any) => {
       obj[e] = (obj[e] || 0) + 1;
       return obj;
@@ -77,7 +69,7 @@ const App = () => {
     <div className='flex items-center min-h-screen w-full p-2  bg-gray-200 justify-center'>
       <div className=' bg-white shadow overflow-hidden rounded-lg p-4 max-w-7xl mx-auto  my-auto px-4 sm:px-6 lg:px-8'>
         <h1 className='items-center  text-3xl text-center justify-center font-medium text-gray-700'>
-          Top 5 Most Attended Colleges By NFL Players{" "}
+          Top 5 Most Attended Colleges By Current NFL Players{" "}
         </h1>
 
         <Searchbar
@@ -87,8 +79,6 @@ const App = () => {
         />
 
         <div className='flow-root  max-w-3xl mx-auto'>
-
-
           <ul className='-my-5 divide-y mt-2 divide-gray-200'>
             {results === "" && !loading && <img alt='logo' src={NFL} />}
 
@@ -97,8 +87,6 @@ const App = () => {
                 <Loader />
               </div>
             )}
-
-
 
             {results !== "" &&
               loading === false &&
@@ -122,12 +110,6 @@ const App = () => {
                   );
                 })}
           </ul>
-
-
-
-
-
-
         </div>
       </div>
     </div>
