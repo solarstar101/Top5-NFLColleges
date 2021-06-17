@@ -9,7 +9,7 @@ const App = () => {
   const [results, setResults] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const clean = (obj :any) => {
+  const clean = (obj: any) => {
     for (var propName in obj) {
       if (obj[propName] === null || obj[propName] === undefined) {
         delete obj[propName];
@@ -41,6 +41,7 @@ const App = () => {
     const final = await clean(AthleteInfo)
       .map((point: any) => point.name)
       .sort();
+
     const hash = await final.sort().reduce((obj: any, e: any) => {
       obj[e] = (obj[e] || 0) + 1;
       return obj;
@@ -78,8 +79,6 @@ const App = () => {
         />
 
         <div className='flow-root  max-w-3xl mx-auto'>
-
-
           <ul className='-my-5 divide-y mt-2 divide-gray-200'>
             {results === "" && !loading && <img alt='logo' src={NFL} />}
 
@@ -88,8 +87,6 @@ const App = () => {
                 <Loader />
               </div>
             )}
-
-
 
             {results !== "" &&
               loading === false &&
@@ -113,12 +110,6 @@ const App = () => {
                   );
                 })}
           </ul>
-
-
-
-
-
-
         </div>
       </div>
     </div>
