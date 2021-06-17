@@ -69,11 +69,7 @@ const App = () => {
     <div className='flex items-center min-h-screen w-full p-2  bg-gray-200 justify-center'>
       <div className=' bg-white shadow overflow-hidden rounded-lg p-4 max-w-7xl mx-auto  my-auto px-4 sm:px-6 lg:px-8'>
         <h1 className='items-center  text-3xl text-center justify-center font-medium text-gray-700'>
-<<<<<<< HEAD
           Top 5 Most Attended Colleges By Current NFL Players
-=======
-          Top 5 Most Attended Colleges By Current NFL Players{" "}
->>>>>>> 61c570ac95407924eef2e909ca09d487fab6988a
         </h1>
 
         <Searchbar
