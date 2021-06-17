@@ -1,5 +1,4 @@
 import { SearchIcon, TrashIcon } from '@heroicons/react/solid'
-import React from 'react'
 
 interface Props {
   results : '' | {}
