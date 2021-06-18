@@ -9,21 +9,26 @@ const App = () => {
   const [results, setResults] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const clean = (obj: any) => {
-    for (var propName in obj) {
+
+  //*need to revisit and find way to fix any type definition
+  const clean = (obj : any) => {
+    for (var propName  in obj) {
       if (obj[propName] === null || obj[propName] === undefined) {
         delete obj[propName];
       }
     }
     return obj;
   };
-  const getTeamData = async () => {
+  const getTeamData  = async () => {
     setLoading(true);
-    const AllTeamsRequest = await axios
+    const AllTeamsRequest  : [] = await axios
       .get(`http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams`)
       .then((res) => res.data.sports[0].leagues[0].teams);
+
+
+
     const TeamInfo = await Promise.all(
-      AllTeamsRequest.map((team: any) =>
+      AllTeamsRequest.map((team: {team:{id:string}}) =>
         axios
           .get(
             `http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${team.team.id}/roster`
@@ -32,37 +37,30 @@ const App = () => {
       )
     );
     const AthleteInfo = await Promise.all(
-      TeamInfo.map((team: any) => team.athletes)
+      TeamInfo.map((team: {athletes:[]} ) => team.athletes)
         .flat()
-        .map((cat: any) => cat.items)
+        .map((cat: {items:[]}) => cat.items)
         .flat()
-        .map((player: any) => player.college)
+        .map((player: {college:string}) => player.college)
     );
-    const final = await clean(AthleteInfo)
-      .map((point: any) => point.name)
-      .sort();
+    
 
-    const hash = await final.sort().reduce((obj: any, e: any) => {
-      obj[e] = (obj[e] || 0) + 1;
-      return obj;
-    }, {});
+    const sortedObj = 
+     await clean(AthleteInfo)
+      .map((point: {name:string}) => point.name)
+      .sort().reduce((obj: any, e: any) => {
+        obj[e] = (obj[e] || 0) + 1;
+        return obj;
+      }, {});
 
-    const organizedHash: any = Object.entries(hash);
-    const sortedHash: any = organizedHash.sort((a: any, b: any) => b[1] - a[1]);
+    const final: any = Object.entries(sortedObj).sort((a: any, b: any) => b[1] - a[1]);
 
-    await setResults(sortedHash);
+    await setResults(final);
     await setLoading(false);
 
-    // async function getMultiple(...objectsToGet : any) {
-    //   let users = [];
-    //   await Promise.all(objectsToGet.map((obj:any) =>
-    //     axios.get('/user/' + obj.id).then(response => {
-    //       // do something with response
-    //       users.push(response);
-    //     })
-    //   ));
-    //   return users;
-    // }
+
+
+
   };
 
   return (
