@@ -1,34 +1,24 @@
 import "tailwindcss/tailwind.css";
-import Searchbar from "./Components/Searchbar";
-import { useState } from "react";
-import axios from "axios";
-import NFL from "../src/assets/nfl.svg";
+
 import Loader from "./Components/Loader";
+import NFL from "../src/assets/nfl.svg";
+import Searchbar from "./Components/Searchbar";
+import axios from "axios";
+import { useState } from "react";
 
 const App = () => {
   const [results, setResults] = useState("");
   const [loading, setLoading] = useState(false);
 
-
-  //*need to revisit and find way to fix any type definition
-  const clean = (obj : any) => {
-    for (var propName  in obj) {
-      if (obj[propName] === null || obj[propName] === undefined) {
-        delete obj[propName];
-      }
-    }
-    return obj;
-  };
-  const getTeamData  = async () => {
+  const getTeamData = async () => {
     setLoading(true);
-    const AllTeamsRequest  : [] = await axios
+
+    const AllTeamsRequest: [] = await axios
       .get(`http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams`)
       .then((res) => res.data.sports[0].leagues[0].teams);
 
-
-
     const TeamInfo = await Promise.all(
-      AllTeamsRequest.map((team: {team:{id:string}}) =>
+      AllTeamsRequest.map((team: { team: { id: string } }) =>
         axios
           .get(
             `http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${team.team.id}/roster`
@@ -36,31 +26,30 @@ const App = () => {
           .then((res) => res.data)
       )
     );
-    const AthleteInfo = await Promise.all(
-      TeamInfo.map((team: {athletes:[]} ) => team.athletes)
-        .flat()
-        .map((cat: {items:[]}) => cat.items)
-        .flat()
-        .map((player: {college:string}) => player.college)
-    );
-    
 
-    const sortedObj = 
-     await clean(AthleteInfo)
-      .map((point: {name:string}) => point.name)
-      .sort().reduce((obj: any, e: any) => {
+    const AthleteInfo = await TeamInfo.map(
+      (team: { athletes: [] }) => team?.athletes
+    )
+      .flat()
+      .map((cat: { items: [] }) => cat?.items)
+      .flat()
+      .map((player: { college: string }) => player?.college);
+
+    const sortedObj = AthleteInfo.map(
+      (point:any) => (point?.name)
+    )
+      .sort()
+      .reduce((obj: any, e: any) => {
         obj[e] = (obj[e] || 0) + 1;
         return obj;
       }, {});
 
-    const final: any = Object.entries(sortedObj).sort((a: any, b: any) => b[1] - a[1]);
+    const final: any = Object.entries(sortedObj).sort(
+      (a: any, b: any) => b[1] - a[1]
+    );
 
     await setResults(final);
     await setLoading(false);
-
-
-
-
   };
 
   return (
