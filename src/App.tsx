@@ -8,7 +8,7 @@ import { useState } from "react";
 
 const App = () => {
   const [results, setResults] = useState<string | []>("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getTeamData = async () => {
     setLoading(true);
