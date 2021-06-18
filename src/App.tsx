@@ -17,7 +17,7 @@ const App = () => {
       .get(`http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams`)
       .then((res) => res.data.sports[0].leagues[0].teams);
 
-    const TeamInfo = await Promise.all(
+    const TeamInfo  = await Promise.all(
       AllTeamsRequest.map((team: { team: { id: string } }) =>
         axios
           .get(
@@ -35,11 +35,12 @@ const App = () => {
       .flat()
       .map((player: { college: string }) => player?.college);
 
-    const sortedObj = AthleteInfo.map((point: any) => point?.name)
+      
+    const sortedObj = AthleteInfo.map((college: any) => college?.name)
       .sort()
-      .reduce((obj: any, e: any) => {
-        obj[e] = (obj[e] || 0) + 1;
-        return obj;
+      .reduce((a: any, e: any) => {
+        a[e] = (a[e] || 0) + 1;
+        return a;
       }, {});
 
     const final: any = Object.entries(sortedObj).sort(
