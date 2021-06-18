@@ -35,9 +35,7 @@ const App = () => {
       .flat()
       .map((player: { college: string }) => player?.college);
 
-    const sortedObj = AthleteInfo.map(
-      (point:any) => (point?.name)
-    )
+    const sortedObj = AthleteInfo.map((point: any) => point?.name)
       .sort()
       .reduce((obj: any, e: any) => {
         obj[e] = (obj[e] || 0) + 1;
