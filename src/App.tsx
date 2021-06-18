@@ -7,7 +7,7 @@ import axios from "axios";
 import { useState } from "react";
 
 const App = () => {
-  const [results, setResults] = useState("");
+  const [results, setResults] = useState<string | []>("");
   const [loading, setLoading] = useState(false);
 
   const getTeamData = async () => {
